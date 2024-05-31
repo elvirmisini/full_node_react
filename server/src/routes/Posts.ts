@@ -17,6 +17,13 @@ router.get('/',(req, res) => {
     res.send(posts)
   });
 
+  router.get('/byId/:id',async (req, res) => {
+    const id=req.params.id
+    const post=await Posts.findByPk(id)
+    console.log(post)
+    res.json(post)
+  });
+
 
 
 export default router 
