@@ -1,0 +1,8 @@
+/node_modules
+/dist
+.env
+azure-pipelines.yml
+/.well-known
+/.mnv
+/.idea
+/uploads
