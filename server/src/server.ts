@@ -2,6 +2,7 @@
 import express, { Router } from 'express';
 import PostRouter from './routes/Posts'
 import CommentsRouter from './routes/Comments'
+import UserRouter from './routes/Users'
 const db = require("../models");
 import cors from "cors";
 const app = express();
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 });
 app.use('/posts',PostRouter)
 app.use('/comments',CommentsRouter)
+app.use('/users',UserRouter)
 
 db.sequelize.sync().then(()=>{
   app.listen(port, () => {
