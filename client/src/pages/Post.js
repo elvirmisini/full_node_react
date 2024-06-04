@@ -20,10 +20,16 @@ function Post() {
     })},[]
     )
     const addComment=()=>{
-      axios.post(`http://localhost:3001/comments`,{commentBody:newComment,PostId:id}).then((response)=>{
+      axios.post(`http://localhost:3001/comments`,{commentBody:newComment,PostId:id},
+      {headers:{accessToken:sessionStorage.getItem("accessToken")}})
+
+      .then((response)=>{
+        if(response.data.error){
+          alert(response.data.error)
+        }else{
       const commentToAdd={commentBody:newComment}      
       setComments([...comments,commentToAdd])
-      setNewComment("")
+      setNewComment("")}
     })}
     
   return (
