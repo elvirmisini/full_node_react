@@ -1,22 +1,17 @@
 // src/index.ts
 import express, { Router } from 'express';
 import PostRouter from './routes/Posts'
-import CommentsRouter from './routes/Comments'
-import UserRouter from './routes/Users'
 const db = require("../models");
-import cors from "cors";
+
 const app = express();
-const port = 3001;
+const port = 3000;
 
 const router = Router()
-app.use(cors())
 app.use(express.json())
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 app.use('/posts',PostRouter)
-app.use('/comments',CommentsRouter)
-app.use('/users',UserRouter)
 
 db.sequelize.sync().then(()=>{
   app.listen(port, () => {
