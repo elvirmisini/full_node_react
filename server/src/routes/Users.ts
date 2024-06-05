@@ -3,6 +3,7 @@ const {Users}= require('../../models')
 const router = Router();
 import bcrypt from "bcrypt";
 import {sign} from "jsonwebtoken";
+import { validateToken } from '../../middlewares/AuthMiddleware';
 
 router.post('/',async (req, res) => {
     const {username,password}=req.body
@@ -24,5 +25,10 @@ router.post('/login',async (req, res) => {
     }
   });
 
+
+router.get('/auth',validateToken, async (req, res) => {
+    
+    res.json(req.data.username)
+  });
 
 export default router 

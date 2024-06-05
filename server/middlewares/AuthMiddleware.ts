@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import {verify} from "jsonwebtoken"
-
+import {verify,JwtPayload} from "jsonwebtoken"
 
 export const validateToken=(req:Request,res:Response,next:NextFunction)=>{
     const accessToken=req.header("accessToken")
@@ -8,8 +7,11 @@ export const validateToken=(req:Request,res:Response,next:NextFunction)=>{
     if(!accessToken) return res.json({error:"User not logged in"})
 
     try{
-        const validToken=verify(accessToken,"importantsecret")
+        const validToken:JwtPayload=verify(accessToken,"importantsecret") as JwtPayload
+        
+        req.data=validToken.username
         if(validToken){
+            
             return next()
         }
     }catch(error)
