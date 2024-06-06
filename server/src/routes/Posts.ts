@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-const {Posts}= require('../../models')
+const {Posts,Likes}= require('../../models')
 const router = Router();
 
 router.get('/',(req, res) => {
@@ -13,7 +13,7 @@ router.get('/',(req, res) => {
   });
 
   router.get('/all-posts',async (req, res) => {
-    const posts=await Posts.findAll()
+    const posts=await Posts.findAll({include:[Likes]})
     res.send(posts)
   });
 

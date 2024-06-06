@@ -8,8 +8,7 @@ export const validateToken=(req:Request,res:Response,next:NextFunction)=>{
 
     try{
         const validToken:JwtPayload=verify(accessToken,"importantsecret") as JwtPayload
-        
-        req.data=validToken.username
+        req.data=validToken
         if(validToken){
             
             return next()

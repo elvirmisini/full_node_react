@@ -65,7 +65,7 @@ function Post() {
                 <label> Username: {comment.username}</label>
                 {authState.username===comment.username&&
 
-                <button onClick={()=>{deleteComment(comment.id)}}>X</button>
+                <button onClick={()=>{deleteComment(comment.id)}}>Delete Comment</button>
             }
               </div>
             })}
