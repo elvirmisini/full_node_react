@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import { validateToken } from '../../middlewares/AuthMiddleware';
 const {Posts,Likes}= require('../../models')
 const router = Router();
 
@@ -12,9 +13,10 @@ router.get('/',(req, res) => {
     res.send(posts)
   });
 
-  router.get('/all-posts',async (req, res) => {
+  router.get('/all-posts',validateToken,async (req, res) => {
     const posts=await Posts.findAll({include:[Likes]})
-    res.send(posts)
+    const likedPosts=await Likes.findAll({where:{UserId:req.data.id}})
+    res.send({listOfPosts:posts,likedPosts:likedPosts})
   });
 
   router.get('/byId/:id',async (req, res) => {
