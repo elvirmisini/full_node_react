@@ -7,8 +7,9 @@ router.get('/',(req, res) => {
     res.send('Hello World!');
   });
   
-  router.post('/',async (req, res) => {
+  router.post('/',validateToken,async (req, res) => {
     const posts=req.body
+    posts.username=req.data.username
     await Posts.create(posts)
     res.send(posts)
   });
@@ -22,8 +23,13 @@ router.get('/',(req, res) => {
   router.get('/byId/:id',async (req, res) => {
     const id=req.params.id
     const post=await Posts.findByPk(id)
-    console.log(post)
     res.json(post)
+  });
+
+router.delete('/:postId',async (req, res) => {
+    const postId=req.params.postId
+    await Posts.destroy( {where:{id:postId}})
+    res.json("Deleted")
   });
 
 

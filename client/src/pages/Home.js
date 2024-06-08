@@ -1,22 +1,30 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import '../App.css';
 import axios from "axios";
 import { useEffect,useState } from 'react';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import {useNavigate} from 'react-router-dom'
+import { AuthContext } from '../helpers/AuthContext';
 function Home() {
      
   const [listOfPosts,setListOfPosts]=useState([])
   const [likedPosts,setLikedPosts]=useState([])
+  const {authState}=useContext(AuthContext)
   let history=useNavigate()
 
   useEffect(()=>{
+    if(!localStorage.getItem("accessToken")){
+      history('/login')
+    }else{
+
+    
+
     axios.get("http://localhost:3001/posts/all-posts",{headers:{accessToken:localStorage.getItem("accessToken")}}).then((response)=>{
     setListOfPosts(response.data.listOfPosts)
     setLikedPosts(response.data.likedPosts.map((like)=>{
       return like.PostId
       }))
-    });
+    });}
   },[])
 
   const likeAPost=(postId)=>{
@@ -38,7 +46,7 @@ function Home() {
       }
     }))
     if(likedPosts.includes(postId)){
-      setLikedPosts(likedPosts.filter((id)=>{return id!=postId}))
+      setLikedPosts(likedPosts.filter((id)=>{return id!==postId}))
     }else{
       setLikedPosts([...likedPosts,postId])
     }
