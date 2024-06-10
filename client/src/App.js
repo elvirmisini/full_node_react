@@ -5,6 +5,7 @@ import Post from './pages/Post'
 import Login from './pages/Login'
 import PageNotFound from './pages/PageNotFound'
 import Registration from './pages/Registration'
+import Profile from './pages/Profile'
 import "./App.css"
 import {AuthContext} from "./helpers/AuthContext"
 import { useState,useEffect } from 'react';
@@ -45,12 +46,12 @@ function App() {
 
 
     return (   
-    <div className="App">
-      <AuthContext.Provider value={{authState,setAuthState}}>
-      <Router>
-        <div className='navbar'>
-          
-        {!authState.status ? (
+      <div className="App">
+      <AuthContext.Provider value={{ authState, setAuthState }}>
+        <Router>
+          <div className="navbar">
+            <div className="links">
+              {!authState.status ? (
                 <>
                   <Link to="/login"> Login</Link>
                   <Link to="/registration"> Registration</Link>
@@ -61,8 +62,12 @@ function App() {
                   <Link to="/createpost"> Create A Post</Link>
                 </>
               )}
-          <h1>{authState.username}</h1>
-        </div>
+            </div>
+            <div className="loggedInContainer">
+              <h1>{authState.username} </h1>
+              {authState.status && <button onClick={logout}> Logout</button>}
+            </div>
+          </div>
       <Routes>
         
         <Route exact path="/" element={<Home/>}/>
@@ -70,6 +75,7 @@ function App() {
           <Route path="/post/:id" element={<Post/>}/>
           <Route path="/registration" element={<Registration/>}/>
           <Route path="/login" element={<Login/>}/>
+          <Route path="/Profile/:id" element={<Profile/>}/>
           <Route path="*" element={<PageNotFound/>}/>
         </Routes>
       </Router>

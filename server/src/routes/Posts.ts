@@ -10,6 +10,7 @@ router.get('/',(req, res) => {
   router.post('/',validateToken,async (req, res) => {
     const posts=req.body
     posts.username=req.data.username
+    posts.UserId=req.data.id
     await Posts.create(posts)
     res.send(posts)
   });
@@ -30,6 +31,12 @@ router.delete('/:postId',async (req, res) => {
     const postId=req.params.postId
     await Posts.destroy( {where:{id:postId}})
     res.json("Deleted")
+  });
+
+router.get('/byuserId/:id',async (req, res) => {
+    const userId=req.params.id
+    const listOfPosts = await Posts.findAll({where:{UserId:userId},include:[Likes]})
+    res.json(listOfPosts)
   });
 
 

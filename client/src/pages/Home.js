@@ -2,8 +2,8 @@ import React, { useContext } from 'react'
 import '../App.css';
 import axios from "axios";
 import { useEffect,useState } from 'react';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import {useNavigate} from 'react-router-dom'
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUp';
+import {Link,useNavigate} from 'react-router-dom'
 import { AuthContext } from '../helpers/AuthContext';
 function Home() {
      
@@ -54,26 +54,39 @@ function Home() {
   }
   return (
     <div>
-       {listOfPosts.map((value,key)=>{
-        return (
-          <div className='post'>
-            <div className='title'>{value.title}</div>
-            <div className='body'  onClick={()=>{history(`/post/${value.id}`)}}>{value.postText}</div>
-            <div className='footer'>{value.username}{" "}
-            <div  className='buttons'>
-            <ThumbUpIcon onClick={()=>
-           {
-            likeAPost(value.id)
-           } } className={likedPosts.includes(value.id)?"unlikeBttn":"likeBttn"}/> 
-           {/* <ThumbUpIcon onClick={()=>
-           {
-            likeAPost(value.id)
-           } } className='unlikeBttn'/> */}
+    {listOfPosts.map((value, key) => {
+      return (
+        <div key={key} className="post">
+          <div className="title"> {value.title} </div>
+          <div
+            className="body"
+            onClick={() => {
+              history(`/post/${value.id}`);
+            }}
+          >
+            {value.postText}
+          </div>
+          <div className="footer">
+            <div className="username">
+              <Link to={`/profile/${value.UserId}`}> {value.username} </Link>
             </div>
-            <label>{value.Likes.length||0} Likes</label>
+            <div className="buttons">
+              <ThumbUpAltIcon
+                onClick={() => {
+                  likeAPost(value.id);
+                }}
+                className={
+                  likedPosts.includes(value.id) ? "unlikeBttn" : "likeBttn"
+                }
+              />
+
+              <label> {value.Likes.length}</label>
             </div>
-          </div>)})} 
-    </div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
   )
 }
 
