@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 const {Users}= require('../../models')
 const router = Router();
-import bcrypt from "bcrypt";
+import bcrypt, { compare } from "bcrypt";
 import {sign} from "jsonwebtoken";
 import { validateToken } from '../../middlewares/AuthMiddleware';
 
@@ -38,5 +38,22 @@ router.get('/basicInfo/:id', async (req, res) => {
 
   res.json(basicInfo)
   });
+
+  
+router.put('/changepassword',validateToken, async (req, res) => {
+    const {oldPassword,newPassword}=req.body
+    const user=await Users.findOne({where:{username:req.data.username}})
+  
+    if(!user) res.json({error:"User does not exists"})
+  
+    const comparePassword=await bcrypt.compare(oldPassword,user.password)
+    if(!comparePassword){
+      res.json({error:"Wrong password"})
+    }
+
+    await Users.update({password:await bcrypt.hash(newPassword,10)},{where:{username:req.data.username}})
+
+  res.json("Success")
+});
 
 export default router 
